@@ -1,6 +1,7 @@
 # 打包目录
 dist/
 
-# 可执行文件
-ipatool*
+# 可执行文件：根目录的 ipatool* 产物，以及任意位置的 .exe
+# 注意 ipatool* 必须锚定根目录，否则会误忽略 references/ipatool.md
+/ipatool*
 *.exe
