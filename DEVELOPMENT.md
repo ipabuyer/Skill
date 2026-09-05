@@ -15,6 +15,7 @@ IPAbuyer.Skill/
 │   └── ipatool.md                  # ipatool 命令参数、JSONL 输出格式、错误对照、FAQ
 ├── scripts/
 │   └── get-ipatool-release.ps1     # 从 ipatool 官方 Release 下载并安装 Windows 可执行文件
+├── bin/                            # 上述脚本的默认下载目录（不入库，运行脚本后生成）
 ├── README.md                       # 面向使用者的介绍、安装、使用示例
 ├── DEVELOPMENT.md                  # 本文档
 ├── CHANGELOG.md                    # 更新日志（发布说明引用此文件）
@@ -23,7 +24,7 @@ IPAbuyer.Skill/
 ├── tag.ps1                         # 本地打 tag 并推送的辅助脚本
 ├── AGENTS.md                       # AI 开发基准约束（禁止修改）
 ├── .markdownlint.jsonc             # markdownlint 规则（中文文档场景定制）
-├── .gitignore                      # 忽略打包目录与 ipatool 可执行文件
+├── .gitignore                      # 忽略打包目录 dist/ 与可执行文件目录 bin/
 └── .github/workflows/release.yml   # 推送 tag 后打包发布到 GitHub Release
 ```
 
@@ -105,8 +106,10 @@ powershell -NoProfile -Command "[void][System.Management.Automation.Language.Par
 ### 安装脚本实测
 
 ```bash
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/get-ipatool-release.ps1 -Version 2.4.0 -OutputDir "$LOCALAPPDATA/IPAbuyer/bin"
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/get-ipatool-release.ps1 -Version 2.4.0
 ```
+
+不传 `-OutputDir` 时默认安装到仓库根目录的 `bin/`（已被 .gitignore 按目录忽略，`git status` 应保持干净）；发布包场景建议显式指定 `-OutputDir "$LOCALAPPDATA/IPAbuyer/bin"`。
 
 预期：下载两个架构的压缩包、SHA-256 校验通过、输出 `Installed amd64/arm64: <路径>`。重复运行应报「Destination already exists」，加 `-Force` 可覆盖。
 
