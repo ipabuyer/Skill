@@ -2,12 +2,13 @@
 
 ## v1.0.0-beta.1
 
-1. 发布首个版本：配合 ipatool 实现「登录 App Store（支持双重验证）→ 搜索 → 购买（获取许可）→ 下载 IPA」的完整流程
+1. 发布首个版本：配合 ipatool 实现「登录 App Store（支持双重验证）→ 搜索 → 购买（获取许可）→ 下载 IPA」的完整流程，并已用真实 Apple 账号完成全流程实战验证
 2. 登录推荐由用户在自己的终端交互式完成：Apple ID 密码与双重验证码不经过 AI 助手，并避开非交互代跑依赖验证码推送的不稳定路径
 3. 新增三平台 ipatool 安装脚本（PowerShell / bash / zsh）：自动检测系统与 CPU 架构，只下载对应一份，经 SHA-256 与可执行文件格式校验后安装到指定目录
-4. 参考文档按工作流步骤拆分（references/ipatool/ 下按命令单文件、references/troubleshooting/ 按问题类型），agent 走到哪步读哪份
+4. 参考文档按工作流步骤拆分（references/ipatool/ 下按命令单文件、references/troubleshooting/ 按问题类型），agent 走到哪步读哪份；命令字段与输出格式均经实测校准
 5. 新增 iTunes Search API 评分补查：用户给出明确挑选标准（如「挑评分最高的免费番茄钟」）时可按标准推荐，购买前仍复述所选应用请求确认
 6. 新增 App Store 直达链接指引：展示候选与结果时附商店页面链接，并明确中国大陆区对外区应用页面强制跳转首页的行为及应对方式
-7. 约定账户安全底线：默认仅自动购买免费 App，付费 App 须经用户明确确认；凭据经 ipatool 加密存储于本机，不写入日志与提交
-8. 全流程 UTF-8 处理：支持中文搜索词，命令输出一律重定向文件后按 UTF-8 读取，规避 GBK 终端乱码
-9. 推送 tag 后由 GitHub Action 自动按白名单打包技能并发布至 GitHub Release
+7. 下载结果提醒：IPA 与下载所用 Apple ID 绑定，安装到设备后，应用更新也需在该设备的 App Store 登录同一 Apple ID
+8. 约定账户安全底线：默认仅自动购买免费 App，付费 App 须经用户明确确认；凭据经 ipatool 加密存储于本机，不写入日志与提交
+9. 全流程 UTF-8 处理：支持中文搜索词，命令输出一律重定向文件后按 UTF-8 读取，规避 GBK 终端乱码
+10. 推送 tag 后由 GitHub Action 自动按白名单打包技能并发布至 GitHub Release
