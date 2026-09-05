@@ -76,7 +76,7 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 - 搜索范围跟随账户的 App Store 区域（storefront），v2.4.0 不支持指定国家/地区。
 - `--platform` 可选 `iphone` / `ipad` / `appletv`，留空为 iPhone 与 iPad 混合搜索。
-- 结果在 `apps` 数组中，每项含 `trackId`（数值 ID）、`bundleId`、`trackName`、`version`、`price`。`price` 字段缺失即免费（0 元）。
+- 结果在 `apps` 数组中，每项含 `id`（数值 ID）、`bundleID`、`name`、`version`、`price`（注意结果行没有 `success` 字段，含 `apps` 的 info 行即结果行；字段名与 iTunes API 的 `trackId` / `bundleId` / `trackName` 不同）。`price` 为 0 即免费。
 - 把候选列表（名称、版本、价格、bundleId）呈现给用户选择，不要替用户猜，并附上 App Store 直达链接（写法与区域限制见 [references/app-store-links.md](references/app-store-links.md)）。例外：用户给出明确挑选标准并委托时（如「挑评分最高的免费番茄钟」），可用 iTunes Search API 补查评分等信息后按标准选定（用法见 [references/itunes-search.md](references/itunes-search.md)），并向用户说明所选应用与依据。
 
 ## 第 3 步：购买（获取许可）

@@ -19,18 +19,20 @@ ipatool search <关键词> [--limit N] [--platform iphone|ipad|appletv] --keycha
 
 ## 输出
 
-成功输出 `count` 与 `apps` 数组：
+成功输出 `count` 与 `apps` 数组。**注意：搜索结果行没有 `success` 字段**，`level` 为 `info` 且含 `apps` 即为结果行：
 
 ```json
-{"level":"info","count":2,"apps":[{"trackId":123456,"bundleId":"com.example.app","trackName":"示例应用","version":"1.2.3","price":0}],"success":true,"time":"2026-01-01T00:00:00+08:00"}
+{"level":"info","count":10,"apps":[{"id":1242689729,"bundleID":"com.kot32.tomatodo","name":"番茄ToDo-极简高效自律番茄钟","version":"8.12.61","price":0}],"time":"2026-09-05T10:02:00+08:00"}
 ```
 
 `apps` 每项的字段：
 
 | 字段 | 说明 |
 | --- | --- |
-| `trackId` | 应用的数值 ID |
-| `bundleId` | 包标识，购买与下载时使用 |
-| `trackName` | 应用名称 |
+| `id` | 应用的数值 ID，对应 download 的 `-i` |
+| `bundleID` | 包标识（注意是大写 `ID`），对应 purchase / download 的 `-b` |
+| `name` | 应用名称 |
 | `version` | 当前上架版本 |
-| `price` | 价格；**字段缺失即免费（0 元）**——源码中价格序列化带 `omitempty`，0 值不会出现 |
+| `price` | 价格，0 即免费 |
+
+字段命名与 iTunes Search API（`trackId` / `bundleId` / `trackName`）不同，两份数据配合使用时不要混用；数值 ID 本身一致。

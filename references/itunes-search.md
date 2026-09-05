@@ -48,6 +48,6 @@ curl -fsSL -G "https://itunes.apple.com/lookup" \
 ## 与 ipatool 搜索的配合
 
 1. 先用 ipatool `search` 拿到候选（结果跟随账户的 storefront）。
-2. 需要评分时，把候选的 `trackId` 用 lookup 一次性批量补查（`country` 与账户区域保持一致，避免查到其他区域的上架状态与评分）。
+2. 需要评分时，把候选的 `trackId` 用 lookup 一次性批量补查（`country` 与账户区域保持一致，避免查到其他区域的上架状态与评分）。注意字段名不同：ipatool 搜索结果是 `id` / `bundleID` / `name`，iTunes API 是 `trackId` / `bundleId` / `trackName`，数值 ID 含义相同。
 3. 挑选依据：以 `averageUserRating` 为主、`userRatingCount` 为辅——评分人数过少时评分参考价值低。
 4. 挑选结果只作为推荐，购买仍须遵循 SKILL.md 第 3 步的确认规则。

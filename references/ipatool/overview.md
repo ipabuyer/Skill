@@ -18,7 +18,7 @@
 ## JSONL 输出总规则
 
 - `--format json` 的输出是**换行分隔的 JSON（JSONL）**，stdout 每行一个独立对象；**逐行解析，不要把整个文件当一个 JSON 读**。
-- 结果行带 `"success":true`，业务字段直接平铺在对象中（如 `apps`、`output`、`alreadyOwned`）；各命令的字段见对应命令文档。
+- 业务字段直接平铺在结果行对象中（如 `apps`、`output`、`alreadyOwned`）；多数命令的结果行带 `"success":true`，但 **search 的结果行没有 `success` 字段**（`level` 为 `info` 且含 `apps` 即为结果行），各命令的字段与判定方式见对应命令文档。
 - 错误行形如：
 
 ```json
