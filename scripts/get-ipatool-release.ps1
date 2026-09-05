@@ -5,8 +5,14 @@
 .DESCRIPTION
     Downloads the ipatool Windows (amd64/arm64) tar.gz archives from the official
     ipatool GitHub releases, verifies SHA-256 checksums, and installs the executables
-    into OutputDir. Bundled with the IPAbuyer agent skill; keep this file ASCII-only
-    so Windows PowerShell 5.1 can parse it without a BOM.
+    into OutputDir (default: the "bin" directory next to this script's repository
+    root, which is gitignored). Bundled with the IPAbuyer agent skill; keep this
+    file ASCII-only so Windows PowerShell 5.1 can parse it without a BOM.
+
+.EXAMPLE
+    ./get-ipatool-release.ps1
+
+    Installs into the default "bin" directory at the repository root.
 
 .EXAMPLE
     ./get-ipatool-release.ps1 -OutputDir "$env:LOCALAPPDATA\IPAbuyer\bin"
@@ -19,7 +25,7 @@ param(
     [ValidatePattern('^$|^\d+\.\d+\.\d+$')]
     [string]$Version = '',
 
-    [string]$OutputDir = $PSScriptRoot,
+    [string]$OutputDir = '',
 
     [switch]$Force
 )
@@ -85,6 +91,12 @@ function Test-PeFile {
 }
 
 try {
+    # $PSScriptRoot is empty inside param() defaults on Windows PowerShell 5.1,
+    # so the default output directory is resolved here instead.
+    if ([string]::IsNullOrWhiteSpace($OutputDir)) {
+        $OutputDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'bin'
+    }
+
     if ([string]::IsNullOrWhiteSpace($Version)) {
         $Version = Get-LatestReleaseVersion
     }
