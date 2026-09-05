@@ -43,7 +43,7 @@ die() {
 
 require_go() {
     if ! command -v go >/dev/null 2>&1; then
-        die "Go is not installed or not on PATH. Install Go 1.25 or newer (for example: brew install go)."
+        die "Go is not installed or not on PATH. Install Go 1.25 or newer from https://go.dev/dl/ (China mirror: https://golang.google.cn/dl/)."
     fi
 
     local go_version_text

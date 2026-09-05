@@ -33,7 +33,11 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
    ```
 
    两种脚本的 stdout 都带安装路径（`Installed <系统>/<架构>: <path>` 行），优先直接取用。
-4. 下载脚本不可用（如本机无法访问 GitHub）时，改用构建脚本从源码编译——源码与依赖均经 Go 模块镜像获取，全程不访问 GitHub。需要本机已装 Go 1.25 及以上（未装时：Windows `scoop install go` 或 winget，macOS `brew install go`，Linux 用系统包管理器；中国大陆也可从 <https://golang.google.cn/dl/> 获取安装包）。
+4. 下载脚本不可用（如本机无法访问 GitHub）时，改用构建脚本从源码编译——源码与依赖均经 Go 模块镜像获取，全程不访问 GitHub。**需要本机已装 Go 1.25 及以上**，未装时先安装：
+
+   - 下载安装包：官方 <https://go.dev/dl/>；中国大陆可用的官方镜像 <https://golang.google.cn/dl/>（内容相同）。按系统与 CPU 架构选包：Windows 用 `.msi` 安装程序（双击安装并自动配置 PATH，装完重开终端），macOS 用 `.pkg` 安装程序，Linux 解压 `.tar.gz` 到 `/usr/local` 并把 `export PATH=$PATH:/usr/local/go/bin` 写入 shell 配置。
+   - 习惯包管理器的用户也可以用 `scoop install go` / `winget install GoLang.Go`（Windows）、`brew install go`（macOS）或 Linux 发行版自带的包（注意核对版本不低于 1.25）。
+   - 装完用 `go version` 确认版本。
 
    **镜像源由用户选择**，实测可携带本模块的有：
 

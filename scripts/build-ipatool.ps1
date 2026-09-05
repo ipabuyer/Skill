@@ -62,7 +62,7 @@ function Get-DefaultArchitecture {
 try {
     $goVersionText = & go version
 } catch {
-    throw "Go is not installed or not on PATH. Install Go $minGoVersion or newer (for example: scoop install go)."
+    throw "Go is not installed or not on PATH. Install Go 1.25 or newer from https://go.dev/dl/ (China mirror: https://golang.google.cn/dl/)."
 }
 
 if ($goVersionText -match 'go(\d+\.\d+(\.\d+)?)') {
