@@ -1,5 +1,9 @@
 # 更新日志
 
+## v1.0.0-beta.2
+
+1. 新增源码构建安装脚本（PowerShell / bash / zsh）：无法访问 GitHub 时，改经 Go 模块镜像源（默认 goproxy.cn）获取 ipatool 源码与依赖并本地编译，版本号注入与官方发布一致，全程无需访问 GitHub；要求本机已装 Go 1.25 及以上
+
 ## v1.0.0-beta.1
 
 1. 发布首个版本：配合 ipatool 实现「登录 App Store（支持双重验证）→ 搜索 → 购买（获取许可）→ 下载 IPA」的完整流程，并已用真实 Apple 账号完成全流程实战验证
