@@ -27,7 +27,10 @@ IPAbuyer.Skill/
 ├── scripts/
 │   ├── get-ipatool-release.ps1     # Windows（PowerShell）：从 ipatool 官方 Release 下载并安装可执行文件
 │   ├── get-ipatool-release.sh      # macOS / Linux（bash）：同上
-│   └── get-ipatool-release.zsh     # macOS / Linux（zsh）：同上
+│   ├── get-ipatool-release.zsh     # macOS / Linux（zsh）：同上
+│   ├── build-ipatool.ps1           # Windows（PowerShell）：经 Go 模块镜像从源码编译（GitHub 不可达时的回退）
+│   ├── build-ipatool.sh            # macOS / Linux（bash）：同上
+│   └── build-ipatool.zsh           # macOS / Linux（zsh）：同上
 ├── bin/                            # 上述脚本的默认下载目录（不入库，运行脚本后生成）
 ├── README.md                       # 面向使用者的介绍、安装、使用示例
 ├── DEVELOPMENT.md                  # 本文档
@@ -136,6 +139,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/get-ipatool-release.
 不传 `-OutputDir` 时默认安装到仓库根目录的 `bin/`（已被 .gitignore 按目录忽略，`git status` 应保持干净）；发布包场景建议显式指定 `-OutputDir "$LOCALAPPDATA/IPAbuyer/bin"`。
 
 预期：自动检测 CPU 架构（`-Architecture amd64|arm64` 可覆盖），只下载该架构的压缩包、SHA-256 校验通过、输出 `Installed <arch>: <路径>`。重复运行应报「Destination already exists」，加 `-Force` 可覆盖。
+
+### 构建脚本实测
+
+```bash
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-ipatool.ps1 -Version 2.4.0
+sh scripts/build-ipatool.sh --version 2.4.0
+```
+
+需要本机装有 Go 1.25+。经 Go 模块镜像（默认 goproxy.cn）获取源码与依赖并编译，产物落在仓库根目录 `bin/`，`--version` 应显示所构建版本。构建源码的模块 zip 与依赖全部来自镜像，全程不访问 GitHub；镜像上的版本列表（`@v/list`）是缓存值，刚发布的版本可能要等一段时间才会出现。
 
 ### 技能行为测试
 

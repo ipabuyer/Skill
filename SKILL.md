@@ -33,8 +33,19 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
    ```
 
    两种脚本的 stdout 都带安装路径（`Installed <系统>/<架构>: <path>` 行），优先直接取用。
+4. 下载脚本不可用（如本机无法访问 GitHub）时，改用构建脚本从源码编译——源码与依赖均经 Go 模块镜像获取（默认 goproxy.cn），全程不访问 GitHub。需要本机已装 Go 1.25 及以上（未装时：Windows `scoop install go` 或 winget，macOS `brew install go`，Linux 用系统包管理器；中国大陆也可从 <https://golang.google.cn/dl/> 获取安装包）：
 
-安装脚本默认解析 ipatool 最新正式版，也可锁定版本（Windows 用 `-Version 2.4.0`，macOS/Linux 用 `--version 2.4.0`）；本技能的文档与命令参数以 v2.4.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force` 或 `--force`）。技能目录在安装后可能只读，因此不要省略输出目录参数。
+   ```bash
+   # Windows（PowerShell）
+   powershell -NoProfile -ExecutionPolicy Bypass -File "<技能目录>/scripts/build-ipatool.ps1" -Version 2.4.0 -OutputDir "$LOCALAPPDATA/IPAbuyer/bin"
+
+   # macOS / Linux（bash 或 zsh）
+   sh "<技能目录>/scripts/build-ipatool.sh" --version 2.4.0 --output-dir "$HOME/.local/share/IPAbuyer/bin"   # zsh 用户可用 .zsh 版
+   ```
+
+   编译产物与官方发布版本功能一致，`--version` 显示正确；默认镜像源 `https://goproxy.cn` 可用 `-Proxy` / `--proxy` 更换为其他 Go 模块镜像。
+
+安装与构建脚本默认解析镜像或官方源上的最新正式版，也可锁定版本（Windows 用 `-Version 2.4.0`，macOS/Linux 用 `--version 2.4.0`）；本技能的文档与命令参数以 v2.4.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force` 或 `--force`）。技能目录在安装后可能只读，因此不要省略输出目录参数。
 
 ## 第 1 步：登录
 
