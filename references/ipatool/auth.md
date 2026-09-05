@@ -16,6 +16,8 @@ ipatool 依次交互提示：
 2. `enter 2FA code:`——双重验证码，仅在 Apple 要求时出现；ipatool 无法主动请求下发，验证码来自受信任设备的推送或 <https://account.apple.com/>。
 3. `enter passphrase to unlock …`——keychain passphrase，首次登录时自设并妥善保存。
 
+密码与 passphrase 输入时终端**不回显任何字符**（连 `*` 都没有），属正常现象，盲输后回车即可。
+
 成功输出 name / email 与 `success:true`。agent 复核登录状态用 `auth info`（见下）。
 
 **备选：非交互模式**（agent 的 shell 无 TTY 时只能这样跑，仅限用户明确要求代跑；密码会暴露给 agent 会话与 shell 历史）：

@@ -17,7 +17,7 @@ ipatool download [-i <trackId>] [-b <bundleId>] [-o <路径>] [--platform iphone
 | `--purchase` | 缺少许可时自动购买（等效自动执行 purchase） |
 | `--external-version-id` | 指定历史版本；省略时下载最新版 |
 
-- `-o` 的行为：传入已存在的目录时，文件自动按「应用名-版本.ipa」命名存入该目录；传入完整文件路径（含不存在的一级文件名）时按该路径保存。
+- `-o` 的行为：传入已存在的目录时，文件自动按 `<bundleId>_<trackId>_<版本>.ipa` 命名存入该目录（实测示例：`com.kot32.tomatodo_1242689729_8.12.61.ipa`）；传入完整文件路径（含不存在的一级文件名）时按该路径保存。
 - 命令内置最多 3 次尝试：凭据过期自动重登；配合 `--purchase` 时缺许可会自动购买后继续。
 - 下载的文件已由 ipatool 注入授权信息（sinf），可直接安装到已登录同一 Apple ID 的设备。
 

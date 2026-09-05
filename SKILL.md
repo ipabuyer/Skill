@@ -100,7 +100,7 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 "$IPATOOL" download -b "<bundleId>" -o "<输出目录或完整文件路径>" --keychain-passphrase "$KC" --format json --non-interactive > "$TMP/download.json"
 ```
 
-- `-o` 传目录时自动按「应用名-版本.ipa」命名，省略则下载到当前工作目录。先确认输出目录存在且可写。
+- `-o` 传目录时自动按 `<bundleId>_<trackId>_<版本>.ipa` 命名，省略则下载到当前工作目录。先确认输出目录存在且可写。
 - `download` 内置最多 3 次自动重试（凭据过期会自动重登）；加 `--purchase` 会在缺许可时自动购买——仅在用户已同意购买的前提下使用。
 - 大型应用有数百 MB，耗时长：为命令设置足够的超时，或放后台执行并轮询完成状态。
 - 成功输出 `"success":true` 与 `"output":"<文件路径>"`。把该路径报告给用户，并用 `ls -la` 确认文件真实存在、大小合理。
