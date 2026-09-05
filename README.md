@@ -36,7 +36,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 - Windows 10 及以上、macOS 或 Linux（amd64 / arm64）。
 - PowerShell、bash 或 zsh 任一可用（系统均自带其一）。
 - 可访问 Apple 与 GitHub 的网络。
-- 一个登录过 iCloud 与 App Store、且完成过至少一次有效购买的 Apple ID（苹果的账户政策要求）。
+- 一个登录过 iCloud 与 App Store、且完成过至少一次有效购买（免费应用即可）的 Apple ID（苹果的账户政策要求）。
 
 ## 常见问题
 
@@ -46,7 +46,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 账户、密码和验证码都正确，但无法登入？
 
-> 受苹果账户政策限制，你的 Apple ID 需要登录过 iCloud 和 App Store，并在 App Store 中完成过一次有效购买。
+> 受苹果账户政策限制，你的 Apple ID 需要登录过 iCloud 和 App Store，并在 App Store 中完成过一次有效购买——免费应用即可。
 
 为什么付费应用不能直接购买？
 
