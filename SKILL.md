@@ -1,6 +1,6 @@
 ---
 name: ipabuyer
-description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文件）。当用户想获取 iOS/iPadOS/tvOS 应用的安装包、收藏免费或限免 App、找回已购应用，或提到 IPA、ipatool、App Store 下载等需求时使用本技能；即使用户没有明确说出 ipatool 也应触发。
+description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文件）。当用户想获取 iOS/iPadOS/tvOS/visionOS 应用的安装包、收藏免费或限免 App、找回已购应用，或提到 IPA、ipatool、App Store 下载等需求时使用本技能；即使用户没有明确说出 ipatool 也应触发。
 ---
 
 # IPAbuyer：购买与下载 App Store 应用
@@ -106,10 +106,9 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 "$IPATOOL" search "应用名" --limit 10 --platform iphone --keychain-passphrase "$KC" --format json --non-interactive > "$TMP/search.json"
 ```
 
-- 搜索范围跟随账户的 App Store 区域（storefront），v2.4.0 不支持指定国家/地区。
-- `--platform` 可选 `iphone` / `ipad` / `appletv`，留空为 iPhone 与 iPad 混合搜索。
+- 搜索范围跟随账户的 App Store 区域（storefront），没有指定国家/地区的参数。
+- `--platform` 可选 `iphone` / `ipad` / `appletv`（v2.5.0 起增加 `visionos`），留空为 iPhone 与 iPad 混合搜索。
 - 结果在 `apps` 数组中，每项含 `id`（数值 ID）、`bundleID`、`name`、`version`、`price`（注意结果行没有 `success` 字段，含 `apps` 的 info 行即结果行；字段名与 iTunes API 的 `trackId` / `bundleId` / `trackName` 不同）。`price` 为 0 即免费。
-- `--platform` 从 v2.5.0 起支持 `visionos`。
 - 要基于账户已购列表操作（如「把我下载过的应用再下载一遍」），用 `list-purchases` 分页列出已购应用，见 [references/ipatool/purchases.md](references/ipatool/purchases.md)。
 - 把候选列表（名称、版本、价格、bundleId）呈现给用户选择，不要替用户猜，并附上 App Store 直达链接（写法与区域限制见 [references/app-store-links.md](references/app-store-links.md)）。例外：用户给出明确挑选标准并委托时（如「挑评分最高的免费番茄钟」），可用 iTunes Search API 补查评分等信息后按标准选定（用法见 [references/itunes-search.md](references/itunes-search.md)），并向用户说明所选应用与依据。
 
@@ -144,7 +143,7 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 ## 输出解析与编码（重要）
 
-- ipatool 的 `--format json` 输出是 JSONL：每行一个独立的 JSON 对象，结果行带 `"success":true`，错误行形如 `{"level":"error","error":"…","success":false}`。逐行解析，不要把整个文件当一个 JSON 读。
+- ipatool 的 `--format json` 输出是 JSONL：每行一个独立的 JSON 对象，结果行多数带 `"success":true`（search 与 list-purchases 例外，以含 `apps` 的 info 行为结果行），错误行形如 `{"level":"error","error":"…","success":false}`。逐行解析，不要把整个文件当一个 JSON 读。
 - 输出为 UTF-8，一律重定向到文件再按 UTF-8 读取（如上所示），不要依赖终端直接显示——中文 Windows 控制台默认 GBK，会把中文应用名打成乱码。必须在 PowerShell 里查看输出时，先执行 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`。
 - 本仓库所有文本文件以 UTF-8 存储；Windows PowerShell 5.1 解析含中文注释的 `.ps1` 需要 BOM，因此 `scripts/` 下的脚本只使用 ASCII 字符。
 
