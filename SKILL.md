@@ -42,23 +42,29 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 所有业务命令（search / purchase / download / auth info）都要求已登录的凭据和 `--keychain-passphrase`。ipatool 把凭据加密存放在 `~/.ipatool/`，passphrase 是加密口令，与 Apple ID 密码无关。
 
-1. **先查状态**，已登录就跳过本步骤余下内容：
+1. **确定 passphrase**：询问用户之前是否设置过（用过 IPAbuyer 或 ipatool 就可能有）；首次登录时让用户在交互提示中自设并妥善保存——建议记入密码管理器，经用户同意后也可存入 `~/.ipatool/passphrase`。passphrase 一旦丢失，已存凭据无法解密，只能删除 `~/.ipatool` 后重新登录。
+2. **先查状态**，已登录就跳过本步骤余下内容：
 
    ```bash
    "$IPATOOL" auth info --keychain-passphrase "$KC" --format json --non-interactive
    ```
 
-2. **确定 passphrase**：询问用户之前是否设置过（用过 IPAbuyer 或 ipatool 就可能有）；没有则生成一个强随机值（如 `openssl rand -base64 24`），告知用户并提醒妥善保存——建议记入密码管理器，经用户同意后也可存入 `~/.ipatool/passphrase`。passphrase 一旦丢失，已存凭据无法解密，只能 `auth revoke` 后重新登录。
-3. **收集凭据**：Apple ID 邮箱、密码、双重验证码（6 位，从受信任设备或 <https://account.apple.com/> 获取）。验证码有效期很短，让用户先拿到再执行。
-4. **执行登录**：
+3. **未登录时，引导用户在自己的终端交互式登录（首选方式，登录不经手 agent）**。把命令交给用户执行：
+
+   ```bash
+   ipatool auth login --email <AppleID邮箱>
+   ```
+
+   ipatool 依次提示：输入 Apple ID 密码（隐藏输入）→ 需要时输入 6 位双重验证码（从受信任设备或 <https://account.apple.com/> 获取）→ 输入 keychain passphrase（首次自设）。完成后让用户回来告知，agent 用第 2 步命令复核，成功输出 `"success":true` 与账户的 name / email。
+
+   交互式登录必须由用户完成：agent 的执行环境通常没有终端（TTY），ipatool 会按非交互模式运行、交互提示不可用；且 ipatool 无法主动请求 Apple 下发验证码，非交互代跑依赖验证码推送、路径不稳定（桌面版 IPAbuyer 曾用假验证码 000000 触发下发，不要复刻该做法）。
+4. **备选（仅用户明确要求 agent 代跑时）**：非交互登录——密码会因此暴露给 agent 会话与 shell 历史：
 
    ```bash
    "$IPATOOL" auth login --email "$EMAIL" --password "$PASS" --auth-code "$CODE" --keychain-passphrase "$KC" --format json --non-interactive > "$TMP/login.json"
    ```
 
-判定成败看 JSON 的 `success` 字段，**不要只看退出码**：需要双重验证码但未提供 `--auth-code` 时，ipatool 输出一行提示后退出码仍为 0。见到 `2FA code is required` 就让用户取一个新验证码重跑。登录成功输出 `"success":true` 与账户的 name / email。
-
-密码含特殊字符时注意 shell 引号转义（Git Bash 中用单引号包裹整个参数值）。
+   判定成败看 JSON 的 `success` 字段，**不要只看退出码**：需要双重验证码但未提供 `--auth-code` 时，ipatool 输出一行提示后退出码仍为 0。密码含特殊字符时注意 shell 引号转义（Git Bash 中用单引号包裹整个参数值）。
 
 ## 第 2 步：搜索应用
 
@@ -109,6 +115,6 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 ## 安全规则
 
-- Apple ID 密码、双重验证码、keychain passphrase 不得写入任何日志、git 提交、对话总结；除用户同意的 `~/.ipatool/passphrase` 外不做任何持久化。命令行传参是 ipatool 的设计使然，但不要额外回显或复制这些值。
+- 不向用户索要 Apple ID 密码与双重验证码；用户主动在对话中提供时，引导其改用交互式登录。密码与验证码不得写入任何日志、git 提交、对话总结。keychain passphrase 除用户同意的 `~/.ipatool/passphrase` 外不做持久化；业务命令的传参是 ipatool 的设计使然，但不要额外回显或复制。
 - 向用户展示登录状态时只显示姓名与邮箱。
 - 脚本安装的 ipatool 经过 SHA-256 校验，不要引导用户从其他来源获取 ipatool。

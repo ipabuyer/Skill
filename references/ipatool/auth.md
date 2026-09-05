@@ -4,6 +4,22 @@
 
 ## auth login — 登录 App Store
 
+**首选：用户在自己的终端交互式登录**（密码与验证码全程不经过 agent）：
+
+```bash
+ipatool auth login --email <AppleID邮箱>
+```
+
+ipatool 依次交互提示：
+
+1. `enter password:`——Apple ID 密码，隐藏输入。
+2. `enter 2FA code:`——双重验证码，仅在 Apple 要求时出现；ipatool 无法主动请求下发，验证码来自受信任设备的推送或 <https://account.apple.com/>。
+3. `enter passphrase to unlock …`——keychain passphrase，首次登录时自设并妥善保存。
+
+成功输出 name / email 与 `success:true`。agent 复核登录状态用 `auth info`（见下）。
+
+**备选：非交互模式**（agent 的 shell 无 TTY 时只能这样跑，仅限用户明确要求代跑；密码会暴露给 agent 会话与 shell 历史）：
+
 ```bash
 ipatool auth login --email <邮箱> --password <密码> [--auth-code <6位验证码>] --keychain-passphrase <口令> --format json --non-interactive
 ```
