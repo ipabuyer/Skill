@@ -23,6 +23,12 @@ Options:
   --output-dir <dir>    Installation directory (default: <repository root>/bin)
   --force               Replace an already built executable
   -h, --help            Show this help
+
+Go module proxies verified to carry this module (choose with --proxy):
+  https://goproxy.cn                     Qiniu, default
+  https://goproxy.io
+  https://mirrors.aliyun.com/goproxy/    Alibaba Cloud
+  https://proxy.golang.org               official, often unreachable in mainland China
 EOF
 }
 

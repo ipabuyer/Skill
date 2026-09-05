@@ -54,7 +54,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 无法访问 GitHub 怎么办？
 
-> 安装脚本会改经 Go 模块镜像源（默认 goproxy.cn）获取 ipatool 源码与依赖并本地编译，全程不需要访问 GitHub，只要求本机装有 Go 1.25 或更高版本；镜像源可通过参数更换。
+> 安装脚本会改经 Go 模块镜像源获取 ipatool 源码与依赖并本地编译，全程不需要访问 GitHub，只要求本机装有 Go 1.25 或更高版本。助手会先请你选择镜像源，实测可用的有：goproxy.cn（七牛云，默认）、goproxy.io、阿里云（mirrors.aliyun.com/goproxy/）、Go 官方（proxy.golang.org，中国大陆通常不可达），也可以用参数指定任意其他镜像。
 
 下载的应用以后怎么更新？
 

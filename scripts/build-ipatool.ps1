@@ -10,6 +10,10 @@
     agent skill; keep this file ASCII-only so Windows PowerShell 5.1 can parse it
     without a BOM.
 
+    Go module proxies verified to carry this module (choose with -Proxy):
+    https://goproxy.cn (Qiniu, default), https://goproxy.io,
+    https://mirrors.aliyun.com/goproxy/, https://proxy.golang.org (official).
+
 .EXAMPLE
     ./build-ipatool.ps1
 

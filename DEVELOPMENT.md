@@ -149,6 +149,8 @@ sh scripts/build-ipatool.sh --version 2.4.0
 
 需要本机装有 Go 1.25+。经 Go 模块镜像（默认 goproxy.cn）获取源码与依赖并编译，产物落在仓库根目录 `bin/`，`--version` 应显示所构建版本。构建源码的模块 zip 与依赖全部来自镜像，全程不访问 GitHub；镜像上的版本列表（`@v/list`）是缓存值，刚发布的版本可能要等一段时间才会出现。
 
+已实测可携带本模块的镜像：goproxy.cn、goproxy.io、mirrors.aliyun.com/goproxy/、proxy.golang.org（均以 `@v/list` 返回 200 验证）；腾讯云 mirrors.cloud.tencent.com/goproxy/ 返回 404，不可用。
+
 ### 技能行为测试
 
 把仓库（或发布 zip 解压后的 `ipabuyer` 目录）放入 AI 助手的技能目录，用以下真实场景验证触发与流程：
