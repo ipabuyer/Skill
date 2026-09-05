@@ -20,7 +20,13 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 1. 用户明确指定了 ipatool 路径，直接使用。
 2. PATH 中已有 `ipatool`（`command -v ipatool`），使用并用 `ipatool --version` 确认版本不低于 2.4。
-3. 都没有，用技能自带脚本安装（自动检测系统与 CPU 架构，从 ipatool 官方 Release 下载对应的一份并做 SHA-256 校验）：
+3. 都没有，**先探测 GitHub 连通性，按网络环境自动选择安装方式**：
+
+   ```bash
+   curl -fsSL --max-time 10 -o /dev/null https://api.github.com && echo github-ok || echo github-unreachable
+   ```
+
+   **GitHub 可达 → 下载脚本**（官方二进制，自动检测系统与 CPU 架构，只下载对应的一份并做 SHA-256 校验）：
 
    ```bash
    # Windows（PowerShell）
@@ -33,7 +39,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
    ```
 
    两种脚本的 stdout 都带安装路径（`Installed <系统>/<架构>: <path>` 行），优先直接取用。
-4. 下载脚本不可用（如本机无法访问 GitHub）时，改用构建脚本从源码编译——源码与依赖均经 Go 模块镜像获取，全程不访问 GitHub。**需要本机已装 Go 1.25 及以上**，未装时先安装：
+
+   **GitHub 不可达 → 构建脚本**（源码与依赖均经 Go 模块镜像获取，全程不访问 GitHub）。**需要本机已装 Go 1.25 及以上**，未装时先安装：
 
    - 下载安装包：官方 <https://go.dev/dl/>；中国大陆可用的官方镜像 <https://golang.google.cn/dl/>（内容相同）。按系统与 CPU 架构选包：Windows 用 `.msi` 安装程序（双击安装并自动配置 PATH，装完重开终端），macOS 用 `.pkg` 安装程序，Linux 解压 `.tar.gz` 到 `/usr/local` 并把 `export PATH=$PATH:/usr/local/go/bin` 写入 shell 配置。
    - 习惯包管理器的用户也可以用 `scoop install go` / `winget install GoLang.Go`（Windows）、`brew install go`（macOS）或 Linux 发行版自带的包（注意核对版本不低于 1.25）。

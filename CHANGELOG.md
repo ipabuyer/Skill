@@ -2,7 +2,7 @@
 
 ## v1.0.0-beta.2
 
-1. 新增源码构建安装脚本（PowerShell / bash / zsh）：无法访问 GitHub 时，改经 Go 模块镜像源获取 ipatool 源码与依赖并本地编译，版本号注入与官方发布一致，全程无需访问 GitHub；内置多个实测可用的镜像（goproxy.cn / goproxy.io / 阿里云 / Go 官方）由用户选择，要求本机已装 Go 1.25 及以上
+1. 安装 ipatool 自动适配网络环境：可访问 GitHub 时下载官方二进制并做 SHA-256 校验；无法访问时自动改经 Go 模块镜像源获取源码并本地编译，版本号注入与官方发布一致，全程无需访问 GitHub。镜像内置多个实测可用选项（goproxy.cn / goproxy.io / 阿里云 / Go 官方）由用户选择，镜像编译要求本机已装 Go 1.25 及以上
 
 ## v1.0.0-beta.1
 
