@@ -6,7 +6,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 ## 功能特性
 
-- **一键安装 ipatool**：自动适配 Windows / macOS / Linux 与 CPU 架构（amd64 或 arm64），从 ipatool 官方 GitHub Releases 下载对应的可执行文件，SHA-256 校验通过后才安装。
+- **一键安装 ipatool**：自动探测网络环境——能访问 GitHub 时从官方 Releases 下载对应平台的可执行文件（SHA-256 校验后才安装），无法访问时自动改经 Go 模块镜像源（默认 goproxy.cn，多镜像可选）从源码编译，全程不需要访问 GitHub（编译需本机装有 Go 1.25+）。
 - **完整购买下载流程**：登录 App Store（支持双重验证）→ 搜索应用 → 获取许可（购买）→ 下载 IPA，全部由 AI 助手按步骤完成。
 - **密码零接触**：首次登录由你在自己的终端交互完成，Apple ID 密码与双重验证码不经过 AI 助手、不进入对话记录。
 - **免费 App 优先**：默认仅自动购买免费应用；付费应用必须经过用户明确确认，保护账户安全。
@@ -35,7 +35,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 - Windows 10 及以上、macOS 或 Linux（amd64 / arm64）。
 - PowerShell、bash 或 zsh 任一可用（系统均自带其一）。
-- 可访问 Apple 与 GitHub 的网络。
+- 可访问 Apple 的网络；安装 ipatool 会自动按网络环境选择官方下载或镜像源编译，后者需本机装有 Go 1.25+。
 - 一个登录过 iCloud 与 App Store、且完成过至少一次有效购买（免费应用即可）的 Apple ID（苹果的账户政策要求）。
 
 ## 常见问题
@@ -51,6 +51,10 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 为什么付费应用不能直接购买？
 
 > 为保证账户安全，技能默认仅自动购买免费应用；付费应用会先向你说明可能产生扣费，经你明确同意后才会继续。
+
+无法访问 GitHub 怎么办？
+
+> 助手会自动探测网络并选择安装方式，GitHub 不可达时改经 Go 模块镜像源获取 ipatool 源码与依赖并本地编译，全程不需要访问 GitHub。只要求本机装有 Go 1.25 或更高版本——可从官网 <https://go.dev/dl/> 下载安装包（中国大陆可用内容相同的镜像站 <https://golang.google.cn/dl/>，Windows 直接双击 `.msi` 安装），也可用 scoop / winget / brew 等包管理器安装。镜像源由你选择，实测可用的有：goproxy.cn（七牛云，默认）、goproxy.io、阿里云（mirrors.aliyun.com/goproxy/）、Go 官方（proxy.golang.org，中国大陆通常不可达），也可以用参数指定任意其他镜像。
 
 下载的应用以后怎么更新？
 

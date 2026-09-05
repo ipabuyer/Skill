@@ -1,8 +1,8 @@
-# ipatool 通用背景（v2.4.0）
+# ipatool 通用背景（v2.4.0 / v2.5.0）
 
-各命令的专属文档：[auth.md](auth.md)、[search.md](search.md)、[purchase.md](purchase.md)、[download.md](download.md)、[versions.md](versions.md)。命令报错排查见 [../troubleshooting/errors.md](../troubleshooting/errors.md)。
+各命令的专属文档：[auth.md](auth.md)、[search.md](search.md)、[purchase.md](purchase.md)、[download.md](download.md)、[purchases.md](purchases.md)、[versions.md](versions.md)。命令报错排查见 [../troubleshooting/errors.md](../troubleshooting/errors.md)。
 
-本文档基于 ipatool v2.4.0 的 `--help` 输出与源码逐一验证，升级上游版本后请重新核对。
+本文档基于 ipatool v2.4.0 与 v2.5.0 的 `--help` 输出、源码与真实账号实测逐一验证。v2.5.0 新增 `visionos` 平台与 `list-purchases` 命令，其余参数与输出和 v2.4.0 完全兼容，本机凭据可跨版本使用；升级上游版本后请重新核对。
 
 ## 全局参数
 
@@ -18,7 +18,7 @@
 ## JSONL 输出总规则
 
 - `--format json` 的输出是**换行分隔的 JSON（JSONL）**，stdout 每行一个独立对象；**逐行解析，不要把整个文件当一个 JSON 读**。
-- 业务字段直接平铺在结果行对象中（如 `apps`、`output`、`alreadyOwned`）；多数命令的结果行带 `"success":true`，但 **search 的结果行没有 `success` 字段**（`level` 为 `info` 且含 `apps` 即为结果行），各命令的字段与判定方式见对应命令文档。
+- 业务字段直接平铺在结果行对象中（如 `apps`、`output`、`alreadyOwned`）；多数命令的结果行带 `"success":true`，但 **search 与 list-purchases 的结果行没有 `success` 字段**（`level` 为 `info` 且含 `apps` 即为结果行），各命令的字段与判定方式见对应命令文档。
 - 错误行形如：
 
 ```json
@@ -35,5 +35,5 @@
 
 ## 平台支持
 
-- 可操作的应用平台：`iphone`、`ipad`、`appletv`，下载产物为 `.ipa`。
+- 可操作的应用平台：`iphone`、`ipad`、`appletv`，v2.5.0 起增加 `visionos`；下载产物为 `.ipa`。
 - ipatool 自身可运行于 Windows / macOS / Linux；本技能的安装脚本（PowerShell / bash / zsh）覆盖全部三个系统（amd64 / arm64）。macOS 也可用 `brew install ipatool`。

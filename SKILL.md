@@ -1,6 +1,6 @@
 ---
 name: ipabuyer
-description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文件）。当用户想获取 iOS/iPadOS/tvOS 应用的安装包、收藏免费或限免 App、找回已购应用，或提到 IPA、ipatool、App Store 下载等需求时使用本技能；即使用户没有明确说出 ipatool 也应触发。
+description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文件）。当用户想获取 iOS/iPadOS/tvOS/visionOS 应用的安装包、收藏免费或限免 App、找回已购应用，或提到 IPA、ipatool、App Store 下载等需求时使用本技能；即使用户没有明确说出 ipatool 也应触发。
 ---
 
 # IPAbuyer：购买与下载 App Store 应用
@@ -10,7 +10,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 ## 环境要求
 
 - Windows 10 及以上、macOS 或 Linux（amd64 / arm64），PowerShell、bash 或 zsh 任一可用。
-- 可访问 Apple 与 GitHub 的网络。
+- 可访问 Apple 的网络。
+- 安装 ipatool 时自动按网络环境选择官方下载或经镜像源从源码编译；后者需本机装有 Go 1.25+（安装方式见第 0 步）。
 
 三个系统的 ipatool 命令完全一致。
 
@@ -20,7 +21,13 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 1. 用户明确指定了 ipatool 路径，直接使用。
 2. PATH 中已有 `ipatool`（`command -v ipatool`），使用并用 `ipatool --version` 确认版本不低于 2.4。
-3. 都没有，用技能自带脚本安装（自动检测系统与 CPU 架构，从 ipatool 官方 Release 下载对应的一份并做 SHA-256 校验）：
+3. 都没有，**先探测 GitHub 连通性，按网络环境自动选择安装方式**：
+
+   ```bash
+   curl -fsSL --max-time 10 -o /dev/null https://api.github.com && echo github-ok || echo github-unreachable
+   ```
+
+   **GitHub 可达 → 下载脚本**（官方二进制，自动检测系统与 CPU 架构，只下载对应的一份并做 SHA-256 校验）：
 
    ```bash
    # Windows（PowerShell）
@@ -34,7 +41,32 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
    两种脚本的 stdout 都带安装路径（`Installed <系统>/<架构>: <path>` 行），优先直接取用。
 
-安装脚本默认解析 ipatool 最新正式版，也可锁定版本（Windows 用 `-Version 2.4.0`，macOS/Linux 用 `--version 2.4.0`）；本技能的文档与命令参数以 v2.4.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force` 或 `--force`）。技能目录在安装后可能只读，因此不要省略输出目录参数。
+   **GitHub 不可达 → 构建脚本**（源码与依赖均经 Go 模块镜像获取，全程不访问 GitHub）。**需要本机已装 Go 1.25 及以上**，未装时先安装：
+
+   - 下载安装包：官方 <https://go.dev/dl/>；中国大陆可用的官方镜像 <https://golang.google.cn/dl/>（内容相同）。按系统与 CPU 架构选包：Windows 用 `.msi` 安装程序（双击安装并自动配置 PATH，装完重开终端），macOS 用 `.pkg` 安装程序，Linux 解压 `.tar.gz` 到 `/usr/local` 并把 `export PATH=$PATH:/usr/local/go/bin` 写入 shell 配置。
+   - 习惯包管理器的用户也可以用 `scoop install go` / `winget install GoLang.Go`（Windows）、`brew install go`（macOS）或 Linux 发行版自带的包（注意核对版本不低于 1.25）。
+   - 装完用 `go version` 确认版本。
+
+   **镜像源由用户选择**，实测可携带本模块的有：
+
+   - `https://goproxy.cn`（七牛云，默认）
+   - `https://goproxy.io`
+   - `https://mirrors.aliyun.com/goproxy/`（阿里云）
+   - `https://proxy.golang.org`（Go 官方，中国大陆通常不可达）
+
+   向用户列出选项并确认用哪个（用户无偏好则用默认的 goproxy.cn），随后把所选地址传给脚本：
+
+   ```bash
+   # Windows（PowerShell）
+   powershell -NoProfile -ExecutionPolicy Bypass -File "<技能目录>/scripts/build-ipatool.ps1" -Version 2.4.0 -Proxy "https://goproxy.cn" -OutputDir "$LOCALAPPDATA/IPAbuyer/bin"
+
+   # macOS / Linux（bash 或 zsh）
+   sh "<技能目录>/scripts/build-ipatool.sh" --version 2.4.0 --proxy "https://goproxy.cn" --output-dir "$HOME/.local/share/IPAbuyer/bin"   # zsh 用户可用 .zsh 版
+   ```
+
+   编译产物与官方发布版本功能一致，`--version` 显示正确。
+
+安装与构建脚本默认解析镜像或官方源上的最新正式版，也可锁定版本（Windows 用 `-Version 2.4.0`，macOS/Linux 用 `--version 2.4.0`）；本技能的文档与命令参数以 v2.4.0 / v2.5.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force` 或 `--force`）。技能目录在安装后可能只读，因此不要省略输出目录参数。
 
 ## 第 1 步：登录
 
@@ -74,9 +106,10 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 "$IPATOOL" search "应用名" --limit 10 --platform iphone --keychain-passphrase "$KC" --format json --non-interactive > "$TMP/search.json"
 ```
 
-- 搜索范围跟随账户的 App Store 区域（storefront），v2.4.0 不支持指定国家/地区。
-- `--platform` 可选 `iphone` / `ipad` / `appletv`，留空为 iPhone 与 iPad 混合搜索。
+- 搜索范围跟随账户的 App Store 区域（storefront），没有指定国家/地区的参数。
+- `--platform` 可选 `iphone` / `ipad` / `appletv`（v2.5.0 起增加 `visionos`），留空为 iPhone 与 iPad 混合搜索。
 - 结果在 `apps` 数组中，每项含 `id`（数值 ID）、`bundleID`、`name`、`version`、`price`（注意结果行没有 `success` 字段，含 `apps` 的 info 行即结果行；字段名与 iTunes API 的 `trackId` / `bundleId` / `trackName` 不同）。`price` 为 0 即免费。
+- 要基于账户已购列表操作（如「把我下载过的应用再下载一遍」），用 `list-purchases` 分页列出已购应用，见 [references/ipatool/purchases.md](references/ipatool/purchases.md)。
 - 把候选列表（名称、版本、价格、bundleId）呈现给用户选择，不要替用户猜，并附上 App Store 直达链接（写法与区域限制见 [references/app-store-links.md](references/app-store-links.md)）。例外：用户给出明确挑选标准并委托时（如「挑评分最高的免费番茄钟」），可用 iTunes Search API 补查评分等信息后按标准选定（用法见 [references/itunes-search.md](references/itunes-search.md)），并向用户说明所选应用与依据。
 
 ## 第 3 步：购买（获取许可）
@@ -110,7 +143,7 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 ## 输出解析与编码（重要）
 
-- ipatool 的 `--format json` 输出是 JSONL：每行一个独立的 JSON 对象，结果行带 `"success":true`，错误行形如 `{"level":"error","error":"…","success":false}`。逐行解析，不要把整个文件当一个 JSON 读。
+- ipatool 的 `--format json` 输出是 JSONL：每行一个独立的 JSON 对象，结果行多数带 `"success":true`（search 与 list-purchases 例外，以含 `apps` 的 info 行为结果行），错误行形如 `{"level":"error","error":"…","success":false}`。逐行解析，不要把整个文件当一个 JSON 读。
 - 输出为 UTF-8，一律重定向到文件再按 UTF-8 读取（如上所示），不要依赖终端直接显示——中文 Windows 控制台默认 GBK，会把中文应用名打成乱码。必须在 PowerShell 里查看输出时，先执行 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`。
 - 本仓库所有文本文件以 UTF-8 存储；Windows PowerShell 5.1 解析含中文注释的 `.ps1` 需要 BOM，因此 `scripts/` 下的脚本只使用 ASCII 字符。
 

@@ -11,8 +11,8 @@ ipatool search <关键词> [--limit N] [--platform iphone|ipad|appletv] --keycha
 | 参数 | 说明 |
 | --- | --- |
 | `<关键词>` | 位置参数，支持中文 |
-| `-l, --limit` | 返回数量上限，默认 5 |
-| `--platform` | `iphone` / `ipad` / `appletv`；留空为 iPhone 与 iPad 混合搜索 |
+| `-l, --limit` | 返回数量上限，默认 5（visionOS 平台上限为 12） |
+| `--platform` | `iphone` / `ipad` / `appletv` / `visionos`（v2.5.0 起）；留空为 iPhone 与 iPad 混合搜索 |
 
 - 搜索范围跟随账户的 App Store 区域（storefront），没有指定国家/地区的参数。
 - `--platform` 取值非法时直接报错 `invalid platform "…"`。

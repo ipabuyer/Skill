@@ -13,11 +13,12 @@ IPAbuyer.Skill/
 ├── SKILL.md                        # 技能主文件：工作流程、命令用法、安全规则
 ├── references/
 │   ├── ipatool/
-│   │   ├── overview.md             # 通用背景：全局参数、JSONL 规则、存储、平台（按 v2.4.0 验证）
+│   │   ├── overview.md             # 通用背景：全局参数、JSONL 规则、存储、平台（按 v2.4.0 / v2.5.0 验证）
 │   │   ├── auth.md                 # 登录、查询状态、登出
 │   │   ├── search.md               # 搜索应用
 │   │   ├── purchase.md             # 购买（获取许可）
 │   │   ├── download.md             # 下载应用包
+│   │   ├── purchases.md            # 已购应用列表（v2.5.0 新增命令）
 │   │   └── versions.md             # 历史版本查询
 │   ├── itunes-search.md            # iTunes Search API：评分与元数据补查（配合委托挑选）
 │   ├── app-store-links.md          # App Store 直达链接格式与区域限制
@@ -27,7 +28,10 @@ IPAbuyer.Skill/
 ├── scripts/
 │   ├── get-ipatool-release.ps1     # Windows（PowerShell）：从 ipatool 官方 Release 下载并安装可执行文件
 │   ├── get-ipatool-release.sh      # macOS / Linux（bash）：同上
-│   └── get-ipatool-release.zsh     # macOS / Linux（zsh）：同上
+│   ├── get-ipatool-release.zsh     # macOS / Linux（zsh）：同上
+│   ├── build-ipatool.ps1           # Windows（PowerShell）：经 Go 模块镜像从源码编译（GitHub 不可达时的回退）
+│   ├── build-ipatool.sh            # macOS / Linux（bash）：同上
+│   └── build-ipatool.zsh           # macOS / Linux（zsh）：同上
 ├── bin/                            # 上述脚本的默认下载目录（不入库，运行脚本后生成）
 ├── README.md                       # 面向使用者的介绍、安装、使用示例
 ├── DEVELOPMENT.md                  # 本文档
@@ -136,6 +140,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/get-ipatool-release.
 不传 `-OutputDir` 时默认安装到仓库根目录的 `bin/`（已被 .gitignore 按目录忽略，`git status` 应保持干净）；发布包场景建议显式指定 `-OutputDir "$LOCALAPPDATA/IPAbuyer/bin"`。
 
 预期：自动检测 CPU 架构（`-Architecture amd64|arm64` 可覆盖），只下载该架构的压缩包、SHA-256 校验通过、输出 `Installed <arch>: <路径>`。重复运行应报「Destination already exists」，加 `-Force` 可覆盖。
+
+### 构建脚本实测
+
+```bash
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-ipatool.ps1 -Version 2.4.0
+sh scripts/build-ipatool.sh --version 2.4.0
+```
+
+需要本机装有 Go 1.25+（未装时从 <https://go.dev/dl/> 或国内镜像 <https://golang.google.cn/dl/> 下载安装包，Windows 用 `.msi` 直接安装；也可用 scoop / winget / brew 等包管理器）。经 Go 模块镜像（默认 goproxy.cn）获取源码与依赖并编译，产物落在仓库根目录 `bin/`，`--version` 应显示所构建版本。构建源码的模块 zip 与依赖全部来自镜像，全程不访问 GitHub；镜像上的版本列表（`@v/list`）是缓存值，刚发布的版本可能要等一段时间才会出现。
+
+已实测可携带本模块的镜像：goproxy.cn、goproxy.io、mirrors.aliyun.com/goproxy/、proxy.golang.org（均以 `@v/list` 返回 200 验证）；腾讯云 mirrors.cloud.tencent.com/goproxy/ 返回 404，不可用。
 
 ### 技能行为测试
 
