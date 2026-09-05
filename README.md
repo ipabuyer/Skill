@@ -15,10 +15,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 ## 安装
 
 1. 从本仓库的 [Releases](https://github.com/ipabuyer/Skill/releases) 页面下载 `IPAbuyer-Skill-<版本>.zip`。
-2. 解压后把得到的 `ipabuyer` 目录放入你的 AI 助手的技能目录，例如：
-   - ZCode：`~/.agents/skills/ipabuyer`
-   - Claude Code：`~/.claude/skills/ipabuyer`
-   - 其他支持 Agent Skill 的工具参照其文档放置。
+2. 解压后把得到的 `ipabuyer` 目录放入你的 AI 助手的技能（Agent Skill）目录，例如跨工具通用的 `~/.agents/skills/`，最终路径为 `~/.agents/skills/ipabuyer`；具体位置以所用 AI 助手的文档为准。
 3. 重启 AI 助手会话，即可通过自然语言触发。
 
 ## 使用示例
