@@ -20,6 +20,7 @@ IPAbuyer.Skill/
 │   │   ├── download.md             # 下载应用包
 │   │   └── versions.md             # 历史版本查询
 │   ├── itunes-search.md            # iTunes Search API：评分与元数据补查（配合委托挑选）
+│   ├── app-store-links.md          # App Store 直达链接格式与区域限制
 │   └── troubleshooting/
 │       ├── errors.md               # 错误对照表
 │       └── faq.md                  # 账户要求与常见问题
