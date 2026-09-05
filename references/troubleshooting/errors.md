@@ -5,7 +5,8 @@
 | 错误消息（子串） | 原因与处理 |
 | --- | --- |
 | `keychain passphrase is required` | 缺少 `--keychain-passphrase` 参数 |
-| `integrity check failed`（aes.KeyUnwrap） | 本机凭据不可用：passphrase 不对、或本机尚无凭据（实测两者输出相同，无法直接区分）。先向用户确认是否设置过 passphrase；无法确认时按未登录处理、走登录流程；passphrase 确已丢失则删除 `~/.ipatool` 目录后重新登录 |
+| `The specified item could not be found in the keyring` | 本机未登录（无凭据），直接引导用户走交互式登录 |
+| `integrity check failed`（aes.KeyUnwrap） | 本机有凭据但 passphrase 不对：向用户确认正确的 passphrase；确已丢失则删除 `~/.ipatool` 目录后重新登录 |
 | `password is required when not running in interactive mode` | login 缺少 `--password` |
 | `2FA code is required`（注意退出码为 0） | 需要双重验证码：交互式登录时 ipatool 会直接提示输入（用户运行命令即可）；非交互代跑时取新验证码后带 `--auth-code` 重跑 |
 | `either the app ID or the bundle identifier must be specified` | download 未提供目标应用 |

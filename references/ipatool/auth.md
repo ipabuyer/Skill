@@ -44,7 +44,7 @@ ipatool auth login --email <邮箱> --password <密码> [--auth-code <6位验证
 ipatool auth info --keychain-passphrase <口令> --format json --non-interactive
 ```
 
-成功输出与 auth login 相同（`name`、`email`、`success`）；凭据不可用（未登录或口令不对）则输出错误 JSON 并返回非零退出码——注意两种情况输出可能相同（`integrity check failed`），无法直接区分，处理方式见 [../troubleshooting/errors.md](../troubleshooting/errors.md)。用于流程开始时判断是否已登录。
+成功输出与 auth login 相同（`name`、`email`、`success`）；凭据不可用则输出错误 JSON 并返回非零退出码，且可区分：`could not be found in the keyring` 表示未登录，`integrity check failed` 表示 passphrase 不对，处理方式见 [../troubleshooting/errors.md](../troubleshooting/errors.md)。用于流程开始时判断是否已登录。
 
 ## auth revoke — 撤销本机凭据
 
