@@ -5,12 +5,16 @@
 | 错误消息（子串） | 原因与处理 |
 | --- | --- |
 | `keychain passphrase is required` | 缺少 `--keychain-passphrase` 参数 |
+| `integrity check failed`（aes.KeyUnwrap） | 本机凭据不可用：passphrase 不对、或本机尚无凭据（实测两者输出相同，无法直接区分）。先向用户确认是否设置过 passphrase；无法确认时按未登录处理、走登录流程；passphrase 确已丢失则删除 `~/.ipatool` 目录后重新登录 |
 | `password is required when not running in interactive mode` | login 缺少 `--password` |
 | `2FA code is required`（注意退出码为 0） | 需要双重验证码，取新验证码后带 `--auth-code` 重跑 |
 | `either the app ID or the bundle identifier must be specified` | download 未提供目标应用 |
 | `invalid platform "…"` | `--platform` 取值不在 iphone / ipad / appletv 之内 |
 | 许可相关错误（未持有许可） | 先执行 purchase，或 download 加 `--purchase`（需用户同意） |
 | 凭据 / token 过期 | download 与 purchase 内置自动重试，无需人工干预 |
+| Apple 服务端错误（如 `account is disabled`） | 服务端原样透传，与本地参数无关，一般是账户状态问题，提示用户更换可用账户或咨询 Apple |
+
+注意校验顺序：命令会**先查询账户信息再做参数校验**（如 search 的 `invalid platform`），凭据不可用时只会先看到凭据类错误，修好凭据后参数错误才会暴露。
 
 ## 排查顺序建议
 
