@@ -19,7 +19,7 @@ ipatool download [-i <trackId>] [-b <bundleId>] [-o <路径>] [--platform iphone
 
 - `-o` 的行为：传入已存在的目录时，文件自动按 `<bundleId>_<trackId>_<版本>.ipa` 命名存入该目录（实测示例：`com.kot32.tomatodo_1242689729_8.12.61.ipa`）；传入完整文件路径（含不存在的一级文件名）时按该路径保存。
 - 命令内置最多 3 次尝试：凭据过期自动重登；配合 `--purchase` 时缺许可会自动购买后继续。
-- 下载的文件已由 ipatool 注入授权信息（sinf），可直接安装到已登录同一 Apple ID 的设备。
+- 下载的文件已由 ipatool 注入授权信息（sinf），**与下载时使用的 Apple ID 绑定**：可直接安装到已登录同一 Apple ID 的设备；安装后该应用的后续更新，也需要设备的 App Store 登录同一 Apple ID 才能进行。
 
 ## 输出
 

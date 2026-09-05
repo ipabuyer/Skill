@@ -52,6 +52,10 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 > 为保证账户安全，技能默认仅自动购买免费应用；付费应用会先向你说明可能产生扣费，经你明确同意后才会继续。
 
+下载的应用以后怎么更新？
+
+> 下载的 IPA 与下载时使用的 Apple ID 绑定。安装到设备后，需要在该设备的 App Store 登录同一个 Apple ID 才能进行应用更新。
+
 更多问题见 [references/troubleshooting/faq.md](./references/troubleshooting/faq.md)。
 
 ## 开发信息
