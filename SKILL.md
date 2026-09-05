@@ -10,7 +10,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 ## 环境要求
 
 - Windows 10 及以上、macOS 或 Linux（amd64 / arm64），PowerShell、bash 或 zsh 任一可用。
-- 可访问 Apple 与 GitHub 的网络。
+- 可访问 Apple 的网络。
+- 安装 ipatool 时自动按网络环境选择官方下载或经镜像源从源码编译；后者需本机装有 Go 1.25+（安装方式见第 0 步）。
 
 三个系统的 ipatool 命令完全一致。
 
