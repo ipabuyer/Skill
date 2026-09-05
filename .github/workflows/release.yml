@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+
+    - uses: BlazeSnow/release-skill-action@main
+      with:
+        skill-name: IPAbuyer
+        skill-lower-name: ipabuyer
+        base-dir: .
+        release-name: ${{ github.ref_name }}
+        release-body: https://github.com/ipabuyer/Skill/blob/main/CHANGELOG.md
+        prerelease: ${{ contains(github.ref_name, '-') }}
+        tag: ${{ github.ref_name }}
