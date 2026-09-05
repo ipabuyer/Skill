@@ -6,7 +6,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 ## 功能特性
 
-- **一键安装 ipatool**：自动检测 CPU 架构，从 ipatool 官方 GitHub Releases 下载对应的 Windows 可执行文件（amd64 或 arm64），SHA-256 校验通过后才安装。
+- **一键安装 ipatool**：自动适配 Windows / macOS / Linux 与 CPU 架构（amd64 或 arm64），从 ipatool 官方 GitHub Releases 下载对应的可执行文件，SHA-256 校验通过后才安装。
 - **完整购买下载流程**：登录 App Store（支持双重验证）→ 搜索应用 → 获取许可（购买）→ 下载 IPA，全部由 AI 助手按步骤完成。
 - **免费 App 优先**：默认仅自动购买免费应用；付费应用必须经过用户明确确认，保护账户安全。
 - **凭据本地加密**：Apple ID 凭据经 ipatool 加密存储在本机 `~/.ipatool/`，不上传任何服务器。
@@ -30,8 +30,8 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 ## 环境要求
 
-- Windows 10 及以上（amd64 / arm64）。macOS 与 Linux 用户可自行安装 ipatool，技能会直接调用。
-- PowerShell（系统自带）或 Git Bash 任一可用。
+- Windows 10 及以上、macOS 或 Linux（amd64 / arm64）。
+- PowerShell、bash 或 zsh 任一可用（系统均自带其一）。
 - 可访问 Apple 与 GitHub 的网络。
 - 一个登录过 iCloud 与 App Store、且完成过至少一次有效购买的 Apple ID（苹果的账户政策要求）。
 

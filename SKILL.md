@@ -9,10 +9,10 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 ## 环境要求
 
-- Windows 10 及以上（amd64 / arm64），PowerShell 或 Git Bash 任一可用。
+- Windows 10 及以上、macOS 或 Linux（amd64 / arm64），PowerShell、bash 或 zsh 任一可用。
 - 可访问 Apple 与 GitHub 的网络。
 
-macOS / Linux 用户可从 ipatool 的 GitHub Releases 自行安装 `ipatool` 命令，后续命令完全一致；技能自带的下载脚本仅支持 Windows。
+三个系统的 ipatool 命令完全一致。
 
 ## 第 0 步：准备 ipatool
 
@@ -20,19 +20,21 @@ macOS / Linux 用户可从 ipatool 的 GitHub Releases 自行安装 `ipatool` �
 
 1. 用户明确指定了 ipatool 路径，直接使用。
 2. PATH 中已有 `ipatool`（`command -v ipatool`），使用并用 `ipatool --version` 确认版本不低于 2.4。
-3. 都没有，用技能自带脚本安装（自动检测 CPU 架构，从 ipatool 官方 Release 下载对应的一份并做 SHA-256 校验）：
+3. 都没有，用技能自带脚本安装（自动检测系统与 CPU 架构，从 ipatool 官方 Release 下载对应的一份并做 SHA-256 校验）：
 
    ```bash
+   # Windows（PowerShell）
    powershell -NoProfile -ExecutionPolicy Bypass -File "<技能目录>/scripts/get-ipatool-release.ps1" -OutputDir "$LOCALAPPDATA/IPAbuyer/bin"
-   ```
-
-   从脚本 stdout 的 `Installed amd64/arm64: <path>` 行取可执行文件路径，或按文件名匹配：
-
-   ```bash
    IPATOOL=$(ls "$LOCALAPPDATA/IPAbuyer/bin"/ipatool-*-windows-*.exe | tail -1)
+
+   # macOS / Linux（bash 或 zsh）
+   sh "<技能目录>/scripts/get-ipatool-release.sh" --output-dir "$HOME/.local/share/IPAbuyer/bin"   # zsh 用户可用 .zsh 版
+   IPATOOL=$(ls "$HOME/.local/share/IPAbuyer/bin"/ipatool-* | tail -1)
    ```
 
-安装脚本默认解析 ipatool 最新正式版，也可用 `-Version 2.4.0` 锁定版本；本技能的文档与命令参数以 v2.4.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force`）。技能目录在安装后可能只读，因此不要省略 `-OutputDir`。
+   两种脚本的 stdout 都带安装路径（`Installed <系统>/<架构>: <path>` 行），优先直接取用。
+
+安装脚本默认解析 ipatool 最新正式版，也可锁定版本（Windows 用 `-Version 2.4.0`，macOS/Linux 用 `--version 2.4.0`）；本技能的文档与命令参数以 v2.4.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force` 或 `--force`）。技能目录在安装后可能只读，因此不要省略输出目录参数。
 
 ## 第 1 步：登录
 

@@ -167,4 +167,4 @@ ipatool get-version-metadata -b <bundleId> --external-version-id <ID> --keychain
 ## 平台支持
 
 - 可操作的应用平台：`iphone`、`ipad`、`appletv`，下载产物为 `.ipa`。
-- ipatool 自身可运行于 Windows / macOS / Linux；本技能的安装脚本仅覆盖 Windows（amd64 / arm64），macOS 可用 `brew install ipatool`，Linux 从 GitHub Releases 下载对应二进制。
+- ipatool 自身可运行于 Windows / macOS / Linux；本技能的安装脚本（PowerShell / bash / zsh）覆盖全部三个系统（amd64 / arm64）。macOS 也可用 `brew install ipatool`。

@@ -14,7 +14,9 @@ IPAbuyer.Skill/
 ├── references/
 │   └── ipatool.md                  # ipatool 命令参数、JSONL 输出格式、错误对照、FAQ
 ├── scripts/
-│   └── get-ipatool-release.ps1     # 从 ipatool 官方 Release 下载并安装 Windows 可执行文件
+│   ├── get-ipatool-release.ps1     # Windows（PowerShell）：从 ipatool 官方 Release 下载并安装可执行文件
+│   ├── get-ipatool-release.sh      # macOS / Linux（bash）：同上
+│   └── get-ipatool-release.zsh     # macOS / Linux（zsh）：同上
 ├── bin/                            # 上述脚本的默认下载目录（不入库，运行脚本后生成）
 ├── README.md                       # 面向使用者的介绍、安装、使用示例
 ├── DEVELOPMENT.md                  # 本文档
@@ -41,6 +43,7 @@ IPAbuyer.Skill/
 
 - **Markdown 与文档**：UTF-8（无 BOM）、LF 换行。`.gitattributes` 已强制 `.md` 为 LF。
 - **PowerShell 脚本**：Windows PowerShell 5.1 按 ANSI（中文系统即 GBK）解析无 BOM 的 `.ps1`，含中文注释或字符串时会乱码甚至解析失败。因此 `scripts/` 下的脚本**只使用 ASCII 字符**（注释与输出均为英文）；如未来必须写中文，需保存为带 BOM 的 UTF-8（仓库内 `tag.ps1` 即为此格式）。
+- **Shell 脚本**：`.sh` 与 `.zsh` 同样只用 ASCII 字符，保存为 UTF-8、LF；只使用 bash 与 zsh 共有的语法（不含 zsh 方言），因此能统一用 shfmt 按 bash 方言格式化。改动后执行 `shfmt -w -i 4 -ci -ln bash scripts/get-ipatool-release.sh scripts/get-ipatool-release.zsh`。
 - **运行 ipatool**：其 JSON 输出固定 UTF-8，而中文 Windows 控制台默认 GBK，直接在终端看输出会乱码。技能内约定的做法是把 stdout 重定向到文件再按 UTF-8 读取；PowerShell 场景可先执行 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`。
 - 用 `file <路径>` 或 `Get-Content -Encoding` 抽查可疑文件的编码。
 
@@ -102,6 +105,16 @@ powershell -NoProfile -Command "[void][System.Management.Automation.Language.Par
 ```
 
 无输出即无语法错误。
+
+### Shell 脚本语法与格式
+
+```bash
+bash -n scripts/get-ipatool-release.sh
+zsh -n scripts/get-ipatool-release.zsh   # 有 zsh 环境时
+shfmt -d -i 4 -ci -ln bash scripts/get-ipatool-release.sh scripts/get-ipatool-release.zsh
+```
+
+`bash -n` / `zsh -n` 无输出即无语法错误；`shfmt -d` 无输出即格式符合（有差异时用 `-w` 直接改写）。macOS / Linux 路径的完整流程无法在 Windows 上执行，但脚本依赖的上游事实（资产名 `ipatool-<版本>-linux|macos-<架构>.tar.gz`、校验文件为纯 64 位十六进制、包内路径 `bin/`）已对照 ipatool 官方 Release 逐项核实，改动涉及这些假设时需重新验证。
 
 ### 安装脚本实测
 
