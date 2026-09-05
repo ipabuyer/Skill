@@ -19,6 +19,7 @@ IPAbuyer.Skill/
 │   │   ├── purchase.md             # 购买（获取许可）
 │   │   ├── download.md             # 下载应用包
 │   │   └── versions.md             # 历史版本查询
+│   ├── itunes-search.md            # iTunes Search API：评分与元数据补查（配合委托挑选）
 │   └── troubleshooting/
 │       ├── errors.md               # 错误对照表
 │       └── faq.md                  # 账户要求与常见问题

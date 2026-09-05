@@ -71,13 +71,13 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 - 搜索范围跟随账户的 App Store 区域（storefront），v2.4.0 不支持指定国家/地区。
 - `--platform` 可选 `iphone` / `ipad` / `appletv`，留空为 iPhone 与 iPad 混合搜索。
 - 结果在 `apps` 数组中，每项含 `trackId`（数值 ID）、`bundleId`、`trackName`、`version`、`price`。`price` 字段缺失即免费（0 元）。
-- 把候选列表（名称、版本、价格、bundleId）呈现给用户选择，不要替用户猜。
+- 把候选列表（名称、版本、价格、bundleId）呈现给用户选择，不要替用户猜。例外：用户给出明确挑选标准并委托时（如「挑评分最高的免费番茄钟」），可用 iTunes Search API 补查评分等信息后按标准选定（用法见 [references/itunes-search.md](references/itunes-search.md)），并向用户说明所选应用与依据。
 
 ## 第 3 步：购买（获取许可）
 
 命令用法与输出详见 [references/ipatool/purchase.md](references/ipatool/purchase.md)。
 
-下载前账户必须持有该 App 的许可。购买会改变账户的已购列表，执行前**必须向用户确认目标应用**（名称 + bundleId），得到明确同意再执行：
+下载前账户必须持有该 App 的许可。购买会改变账户的已购列表，执行前**必须向用户确认目标应用**（名称 + bundleId），得到明确同意再执行。用户委托挑选的场景也不例外：按标准选定后，复述所选应用（名称、bundleId、评分依据）请求确认，同意后才执行：
 
 ```bash
 "$IPATOOL" purchase -b "<bundleId>" --keychain-passphrase "$KC" --format json --non-interactive > "$TMP/purchase.json"
