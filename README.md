@@ -49,7 +49,7 @@ IPAbuyer Skill 是一个 agent 技能（Agent Skill），配合开源工具 [ipa
 
 > 为保证账户安全，技能默认仅自动购买免费应用；付费应用会先向你说明可能产生扣费，经你明确同意后才会继续。
 
-更多问题见 [references/ipatool.md](./references/ipatool.md) 中的「账户要求与常见问题」。
+更多问题见 [references/troubleshooting/faq.md](./references/troubleshooting/faq.md)。
 
 ## 开发信息
 

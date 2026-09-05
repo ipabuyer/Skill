@@ -5,7 +5,12 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 # IPAbuyer：购买与下载 App Store 应用
 
-本技能配合 [ipatool](https://github.com/majd/ipatool) 完成「登录 App Store → 搜索 → 购买（获取许可）→ 下载 IPA」的完整流程。所有命令参数、JSON 输出格式与常见错误的细节见 [references/ipatool.md](references/ipatool.md)，首次执行某个步骤前先阅读对应小节。
+本技能配合 [ipatool](https://github.com/majd/ipatool) 完成「登录 App Store → 搜索 → 购买（获取许可）→ 下载 IPA」的完整流程。细节文档按需阅读，首次执行某个步骤前先查阅对应内容：
+
+- 命令参数与用法：[references/ipatool/commands.md](references/ipatool/commands.md)
+- JSONL 输出格式与解析：[references/ipatool/output.md](references/ipatool/output.md)
+- 命令报错排查：[references/troubleshooting/errors.md](references/troubleshooting/errors.md)
+- 账户与登录类问题：[references/troubleshooting/faq.md](references/troubleshooting/faq.md)
 
 ## 环境要求
 

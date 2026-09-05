@@ -12,7 +12,12 @@
 IPAbuyer.Skill/
 ├── SKILL.md                        # 技能主文件：工作流程、命令用法、安全规则
 ├── references/
-│   └── ipatool.md                  # ipatool 命令参数、JSONL 输出格式、错误对照、FAQ
+│   ├── ipatool/
+│   │   ├── commands.md             # ipatool 命令参数与用法（按 v2.4.0 验证）
+│   │   └── output.md               # JSONL 输出格式与解析规则
+│   └── troubleshooting/
+│       ├── errors.md               # 错误对照表
+│       └── faq.md                  # 账户要求与常见问题
 ├── scripts/
 │   ├── get-ipatool-release.ps1     # Windows（PowerShell）：从 ipatool 官方 Release 下载并安装可执行文件
 │   ├── get-ipatool-release.sh      # macOS / Linux（bash）：同上
@@ -79,13 +84,13 @@ IPAbuyer.Skill/
 - frontmatter 只需 `name` 与 `description`；`name` 固定为 `ipabuyer`。
 - `description` 是技能触发的主要依据，要覆盖用户的常见说法（IPA、ipatool、App Store、下载、购买、备份等），可以适度「主动」一些。
 - 正文控制在 500 行以内；命令参数、输出格式等细节放入 `references/`，由正文按步骤引导按需阅读。
-- 命令示例必须可直接复制执行，且与 `references/ipatool.md` 保持一致。
+- 命令示例必须可直接复制执行，且与 `references/ipatool/` 下的文档保持一致。
 
 ### 上游 ipatool 升级流程
 
 1. 查看 [ipatool Releases](https://github.com/majd/ipatool/releases) 的最新正式版，运行新版的 `--help` 逐一核对参数变化。
-2. 用新版本实测各命令的 `--format json` 输出结构（可参照 `references/ipatool.md` 的示例逐条比对）。
-3. 更新 `references/ipatool.md` 顶部的版本标注与受影响的参数、输出示例；`scripts/get-ipatool-release.ps1` 默认拉取最新正式版，通常无需改动。
+2. 用新版本实测各命令的 `--format json` 输出结构（可参照 `references/ipatool/output.md` 的示例逐条比对）。
+3. 更新 `references/ipatool/` 下的版本标注与受影响的参数、输出示例；`scripts/get-ipatool-release.ps1` 默认拉取最新正式版，通常无需改动。
 4. 提交前提示用户确认上游正式版是否变化，以及是否需要在文档中锁定版本（如 `-Version 2.4.0`）。
 
 ## 本地测试
@@ -93,7 +98,7 @@ IPAbuyer.Skill/
 ### Markdown 规范
 
 ```bash
-npx markdownlint-cli "*.md" "references/*.md"
+npx markdownlint-cli "*.md" "references/**/*.md"
 ```
 
 规则见 `.markdownlint.jsonc`（为中文文档关闭了行长、内联 HTML 等不适用项）。
