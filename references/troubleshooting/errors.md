@@ -14,6 +14,7 @@
 | 许可相关错误（未持有许可） | 先执行 purchase，或 download 加 `--purchase`（需用户同意） |
 | 凭据 / token 过期 | download 与 purchase 内置自动重试，无需人工干预 |
 | Apple 服务端错误（如 `account is disabled`） | 服务端原样透传，与本地参数无关，一般是账户状态问题，提示用户更换可用账户或咨询 Apple |
+| `authentication request failed after 3 attempts`（HTTP 204 / 500 / 503 等） | Apple 认证服务瞬时故障或网络路径不畅（上游已知问题，v2.4.0 / v2.5.0 均受影响，与凭据是否正确无关）。命令内部已自动重试 3 次：先直接重跑命令、多试几次（每次失败的状态码常不同，重试可通过）；仍失败建议用户更换网络出口或稍后再试，不要误判为密码错误 |
 
 注意校验顺序：命令会**先查询账户信息再做参数校验**（如 search 的 `invalid platform`），凭据不可用时只会先看到凭据类错误，修好凭据后参数错误才会暴露。
 
