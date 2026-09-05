@@ -4,7 +4,7 @@
 
 ## 项目定位
 
-本仓库是一个 agent skill（AI 助手技能），配合 [ipatool](https://github.com/majd/ipatool) 帮助用户通过 AI 助手购买与下载 App Store 中的应用。它与 [IPAbuyer 桌面版](https://github.com/ipabuyer/ipabuyer)同源同能力：桌面版把 ipatool 封装进 WinUI 3 界面，本仓库把 ipatool 的使用流程写成 AI 助手可执行的指引（SKILL.md）与辅助脚本（scripts/）。
+本仓库是一个 agent skill（AI 助手技能），配合 [ipatool](https://github.com/majd/ipatool) 帮助用户通过 AI 助手购买与下载 App Store 中的应用。它与 [IPAbuyer 桌面版](https://github.com/ipabuyer/ipabuyer)同源同能力：桌面版把 ipatool 封装进 WinUI 3 界面，本仓库把 ipatool 的使用流程写成 AI 助手可执行的指引（SKILL.md）与辅助脚本（scripts/）。桌面版内置 amd64 与 arm64 两份 ipatool 是为打包分发；本技能只在用户机器上运行，安装脚本按当前 CPU 架构只下载一份（可用 `-Architecture` 覆盖）。
 
 ## 仓库结构
 
@@ -111,7 +111,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/get-ipatool-release.
 
 不传 `-OutputDir` 时默认安装到仓库根目录的 `bin/`（已被 .gitignore 按目录忽略，`git status` 应保持干净）；发布包场景建议显式指定 `-OutputDir "$LOCALAPPDATA/IPAbuyer/bin"`。
 
-预期：下载两个架构的压缩包、SHA-256 校验通过、输出 `Installed amd64/arm64: <路径>`。重复运行应报「Destination already exists」，加 `-Force` 可覆盖。
+预期：自动检测 CPU 架构（`-Architecture amd64|arm64` 可覆盖），只下载该架构的压缩包、SHA-256 校验通过、输出 `Installed <arch>: <路径>`。重复运行应报「Destination already exists」，加 `-Force` 可覆盖。
 
 ### 技能行为测试
 

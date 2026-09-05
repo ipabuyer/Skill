@@ -20,17 +20,16 @@ macOS / Linux 用户可从 ipatool 的 GitHub Releases 自行安装 `ipatool` �
 
 1. 用户明确指定了 ipatool 路径，直接使用。
 2. PATH 中已有 `ipatool`（`command -v ipatool`），使用并用 `ipatool --version` 确认版本不低于 2.4。
-3. 都没有，用技能自带脚本安装（自动从 ipatool 官方 Release 下载并做 SHA-256 校验，amd64 与 arm64 各装一份）：
+3. 都没有，用技能自带脚本安装（自动检测 CPU 架构，从 ipatool 官方 Release 下载对应的一份并做 SHA-256 校验）：
 
    ```bash
    powershell -NoProfile -ExecutionPolicy Bypass -File "<技能目录>/scripts/get-ipatool-release.ps1" -OutputDir "$LOCALAPPDATA/IPAbuyer/bin"
    ```
 
-   然后按 CPU 架构选择可执行文件（从脚本 stdout 的 `Installed <arch>: <path>` 行取路径，或按文件名匹配）：
+   从脚本 stdout 的 `Installed amd64/arm64: <path>` 行取可执行文件路径，或按文件名匹配：
 
    ```bash
-   case "$PROCESSOR_ARCHITECTURE" in ARM64) A=arm64 ;; *) A=amd64 ;; esac
-   IPATOOL=$(ls "$LOCALAPPDATA/IPAbuyer/bin"/ipatool-*-windows-"$A".exe | tail -1)
+   IPATOOL=$(ls "$LOCALAPPDATA/IPAbuyer/bin"/ipatool-*-windows-*.exe | tail -1)
    ```
 
 安装脚本默认解析 ipatool 最新正式版，也可用 `-Version 2.4.0` 锁定版本；本技能的文档与命令参数以 v2.4.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force`）。技能目录在安装后可能只读，因此不要省略 `-OutputDir`。
