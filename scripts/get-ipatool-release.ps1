@@ -3,27 +3,34 @@
     Download and install ipatool Windows executables from official GitHub Releases.
 
 .DESCRIPTION
-    Downloads the ipatool Windows (amd64/arm64) tar.gz archives from the official
-    ipatool GitHub releases, verifies SHA-256 checksums, and installs the executables
+    Downloads the ipatool Windows tar.gz archive matching the current CPU
+    architecture (or the -Architecture parameter) from the official ipatool
+    GitHub releases, verifies its SHA-256 checksum, and installs the executable
     into OutputDir (default: the "bin" directory next to this script's repository
-    root, which is gitignored). Bundled with the IPAbuyer agent skill; keep this
-    file ASCII-only so Windows PowerShell 5.1 can parse it without a BOM.
+    root, which is gitignored). The desktop IPAbuyer app ships both architectures
+    for packaging; this skill runs on the user's machine and only fetches one.
+    Bundled with the IPAbuyer agent skill; keep this file ASCII-only so Windows
+    PowerShell 5.1 can parse it without a BOM.
 
 .EXAMPLE
     ./get-ipatool-release.ps1
 
-    Installs into the default "bin" directory at the repository root.
+    Installs the executable for the current CPU architecture into the default
+    "bin" directory at the repository root.
 
 .EXAMPLE
     ./get-ipatool-release.ps1 -OutputDir "$env:LOCALAPPDATA\IPAbuyer\bin"
 
 .EXAMPLE
-    ./get-ipatool-release.ps1 -Version 2.4.0 -OutputDir "$env:LOCALAPPDATA\IPAbuyer\bin" -Force
+    ./get-ipatool-release.ps1 -Version 2.4.0 -Architecture arm64 -OutputDir "$env:LOCALAPPDATA\IPAbuyer\bin" -Force
 #>
 [CmdletBinding()]
 param(
     [ValidatePattern('^$|^\d+\.\d+\.\d+$')]
     [string]$Version = '',
+
+    [ValidateSet('amd64', 'arm64')]
+    [string]$Architecture = '',
 
     [string]$OutputDir = '',
 
@@ -40,10 +47,27 @@ if (-not (Test-Path -LiteralPath $tarExecutable -PathType Leaf)) {
     $tarExecutable = 'tar'
 }
 
-$architectures = @('amd64', 'arm64')
 $latestReleaseApiUrl = 'https://api.github.com/repos/majd/ipatool/releases/latest'
 $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) "ipabuyer-ipatool-$([System.Guid]::NewGuid().ToString('N'))"
 $stagedBinaries = @()
+
+function Get-DefaultArchitecture {
+    $value = $env:PROCESSOR_ARCHITECTURE
+    if ($value -eq 'ARM64') {
+        return 'arm64'
+    }
+    if ($value -eq 'AMD64') {
+        return 'amd64'
+    }
+    # A 32-bit process on 64-bit Windows reports x86; the real architecture is in the WOW64 variable.
+    if ($value -eq 'x86' -and $env:PROCESSOR_ARCHITEW6432 -eq 'ARM64') {
+        return 'arm64'
+    }
+    if ($value -eq 'x86' -and $env:PROCESSOR_ARCHITEW6432 -eq 'AMD64') {
+        return 'amd64'
+    }
+    throw "Unsupported CPU architecture: $value"
+}
 
 function Get-LatestReleaseVersion {
     Write-Host "Resolving the latest ipatool release from $latestReleaseApiUrl"
@@ -100,6 +124,12 @@ try {
     if ([string]::IsNullOrWhiteSpace($Version)) {
         $Version = Get-LatestReleaseVersion
     }
+
+    if ([string]::IsNullOrWhiteSpace($Architecture)) {
+        $Architecture = Get-DefaultArchitecture
+    }
+    $architectures = @($Architecture)
+    Write-Host "Target architecture: $Architecture"
 
     $releaseBaseUrl = "https://github.com/majd/ipatool/releases/download/v$Version"
     Write-Host "Using ipatool v$Version"
