@@ -13,7 +13,7 @@ ipatool download [-i <trackId>] [-b <bundleId>] [-o <路径>] [--platform iphone
 | `-i, --app-id` | 应用的数值 ID（与 `-b` 至少提供一个） |
 | `-b, --bundle-identifier` | 包标识，提供时**覆盖** `-i` |
 | `-o, --output` | 输出目录或完整文件路径，省略时下载到当前工作目录 |
-| `--platform` | `iphone` / `ipad` / `appletv`；留空默认 iPhone |
+| `--platform` | `iphone` / `ipad` / `appletv` / `visionos`（v2.5.0 起）；留空默认 iPhone |
 | `--purchase` | 缺少许可时自动购买（等效自动执行 purchase） |
 | `--external-version-id` | 指定历史版本；省略时下载最新版 |
 

@@ -13,11 +13,12 @@ IPAbuyer.Skill/
 ├── SKILL.md                        # 技能主文件：工作流程、命令用法、安全规则
 ├── references/
 │   ├── ipatool/
-│   │   ├── overview.md             # 通用背景：全局参数、JSONL 规则、存储、平台（按 v2.4.0 验证）
+│   │   ├── overview.md             # 通用背景：全局参数、JSONL 规则、存储、平台（按 v2.4.0 / v2.5.0 验证）
 │   │   ├── auth.md                 # 登录、查询状态、登出
 │   │   ├── search.md               # 搜索应用
 │   │   ├── purchase.md             # 购买（获取许可）
 │   │   ├── download.md             # 下载应用包
+│   │   ├── purchases.md            # 已购应用列表（v2.5.0 新增命令）
 │   │   └── versions.md             # 历史版本查询
 │   ├── itunes-search.md            # iTunes Search API：评分与元数据补查（配合委托挑选）
 │   ├── app-store-links.md          # App Store 直达链接格式与区域限制

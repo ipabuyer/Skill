@@ -66,7 +66,7 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
    编译产物与官方发布版本功能一致，`--version` 显示正确。
 
-安装与构建脚本默认解析镜像或官方源上的最新正式版，也可锁定版本（Windows 用 `-Version 2.4.0`，macOS/Linux 用 `--version 2.4.0`）；本技能的文档与命令参数以 v2.4.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force` 或 `--force`）。技能目录在安装后可能只读，因此不要省略输出目录参数。
+安装与构建脚本默认解析镜像或官方源上的最新正式版，也可锁定版本（Windows 用 `-Version 2.4.0`，macOS/Linux 用 `--version 2.4.0`）；本技能的文档与命令参数以 v2.4.0 / v2.5.0 为基准验证。若目标文件已存在脚本会报错，说明本机装过，直接复用即可（确要覆盖时加 `-Force` 或 `--force`）。技能目录在安装后可能只读，因此不要省略输出目录参数。
 
 ## 第 1 步：登录
 
@@ -109,6 +109,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 - 搜索范围跟随账户的 App Store 区域（storefront），v2.4.0 不支持指定国家/地区。
 - `--platform` 可选 `iphone` / `ipad` / `appletv`，留空为 iPhone 与 iPad 混合搜索。
 - 结果在 `apps` 数组中，每项含 `id`（数值 ID）、`bundleID`、`name`、`version`、`price`（注意结果行没有 `success` 字段，含 `apps` 的 info 行即结果行；字段名与 iTunes API 的 `trackId` / `bundleId` / `trackName` 不同）。`price` 为 0 即免费。
+- `--platform` 从 v2.5.0 起支持 `visionos`。
+- 要基于账户已购列表操作（如「把我下载过的应用再下载一遍」），用 `list-purchases` 分页列出已购应用，见 [references/ipatool/purchases.md](references/ipatool/purchases.md)。
 - 把候选列表（名称、版本、价格、bundleId）呈现给用户选择，不要替用户猜，并附上 App Store 直达链接（写法与区域限制见 [references/app-store-links.md](references/app-store-links.md)）。例外：用户给出明确挑选标准并委托时（如「挑评分最高的免费番茄钟」），可用 iTunes Search API 补查评分等信息后按标准选定（用法见 [references/itunes-search.md](references/itunes-search.md)），并向用户说明所选应用与依据。
 
 ## 第 3 步：购买（获取许可）
