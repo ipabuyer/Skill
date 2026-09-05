@@ -13,8 +13,12 @@ IPAbuyer.Skill/
 ├── SKILL.md                        # 技能主文件：工作流程、命令用法、安全规则
 ├── references/
 │   ├── ipatool/
-│   │   ├── commands.md             # ipatool 命令参数与用法（按 v2.4.0 验证）
-│   │   └── output.md               # JSONL 输出格式与解析规则
+│   │   ├── overview.md             # 通用背景：全局参数、JSONL 规则、存储、平台（按 v2.4.0 验证）
+│   │   ├── auth.md                 # 登录、查询状态、登出
+│   │   ├── search.md               # 搜索应用
+│   │   ├── purchase.md             # 购买（获取许可）
+│   │   ├── download.md             # 下载应用包
+│   │   └── versions.md             # 历史版本查询
 │   └── troubleshooting/
 │       ├── errors.md               # 错误对照表
 │       └── faq.md                  # 账户要求与常见问题
@@ -89,7 +93,7 @@ IPAbuyer.Skill/
 ### 上游 ipatool 升级流程
 
 1. 查看 [ipatool Releases](https://github.com/majd/ipatool/releases) 的最新正式版，运行新版的 `--help` 逐一核对参数变化。
-2. 用新版本实测各命令的 `--format json` 输出结构（可参照 `references/ipatool/output.md` 的示例逐条比对）。
+2. 用新版本实测各命令的 `--format json` 输出结构（可参照 `references/ipatool/` 各命令文档的输出示例逐条比对）。
 3. 更新 `references/ipatool/` 下的版本标注与受影响的参数、输出示例；`scripts/get-ipatool-release.ps1` 默认拉取最新正式版，通常无需改动。
 4. 提交前提示用户确认上游正式版是否变化，以及是否需要在文档中锁定版本（如 `-Version 2.4.0`）。
 

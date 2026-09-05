@@ -5,12 +5,7 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 # IPAbuyer：购买与下载 App Store 应用
 
-本技能配合 [ipatool](https://github.com/majd/ipatool) 完成「登录 App Store → 搜索 → 购买（获取许可）→ 下载 IPA」的完整流程。细节文档按需阅读，首次执行某个步骤前先查阅对应内容：
-
-- 命令参数与用法：[references/ipatool/commands.md](references/ipatool/commands.md)
-- JSONL 输出格式与解析：[references/ipatool/output.md](references/ipatool/output.md)
-- 命令报错排查：[references/troubleshooting/errors.md](references/troubleshooting/errors.md)
-- 账户与登录类问题：[references/troubleshooting/faq.md](references/troubleshooting/faq.md)
+本技能配合 [ipatool](https://github.com/majd/ipatool) 完成「登录 App Store → 搜索 → 购买（获取许可）→ 下载 IPA」的完整流程。通用背景（全局参数、JSONL 输出规则、凭据存储）见 [references/ipatool/overview.md](references/ipatool/overview.md)；命令报错查 [references/troubleshooting/errors.md](references/troubleshooting/errors.md)；账户与登录类问题查 [references/troubleshooting/faq.md](references/troubleshooting/faq.md)。各步骤专属的命令文档在小节内标注，走到哪步读哪份。
 
 ## 环境要求
 
@@ -43,6 +38,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 ## 第 1 步：登录
 
+命令用法与输出解析详见 [references/ipatool/auth.md](references/ipatool/auth.md)。
+
 所有业务命令（search / purchase / download / auth info）都要求已登录的凭据和 `--keychain-passphrase`。ipatool 把凭据加密存放在 `~/.ipatool/`，passphrase 是加密口令，与 Apple ID 密码无关。
 
 1. **先查状态**，已登录就跳过本步骤余下内容：
@@ -65,6 +62,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 ## 第 2 步：搜索应用
 
+命令用法与输出字段详见 [references/ipatool/search.md](references/ipatool/search.md)。
+
 ```bash
 "$IPATOOL" search "应用名" --limit 10 --platform iphone --keychain-passphrase "$KC" --format json --non-interactive > "$TMP/search.json"
 ```
@@ -76,6 +75,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 
 ## 第 3 步：购买（获取许可）
 
+命令用法与输出详见 [references/ipatool/purchase.md](references/ipatool/purchase.md)。
+
 下载前账户必须持有该 App 的许可。购买会改变账户的已购列表，执行前**必须向用户确认目标应用**（名称 + bundleId），得到明确同意再执行：
 
 ```bash
@@ -86,6 +87,8 @@ description: 通过 ipatool 购买、下载与备份 App Store 应用（IPA 文�
 - 输出 `"alreadyOwned":true` 表示账户已持有许可，直接进入下载。
 
 ## 第 4 步：下载 IPA
+
+命令用法与输出详见 [references/ipatool/download.md](references/ipatool/download.md)；要下载历史版本，先查 [references/ipatool/versions.md](references/ipatool/versions.md)。
 
 ```bash
 "$IPATOOL" download -b "<bundleId>" -o "<输出目录或完整文件路径>" --keychain-passphrase "$KC" --format json --non-interactive > "$TMP/download.json"

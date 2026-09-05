@@ -1,6 +1,6 @@
 # ipatool 错误对照表
 
-基于 ipatool v2.4.0。错误以 JSONL 的 error 行输出（格式与解析见 [../ipatool/output.md](../ipatool/output.md)），`error` 字段为英文消息，按子串匹配下表定位原因。
+基于 ipatool v2.4.0。错误以 JSONL 的 error 行输出（格式与解析见 [../ipatool/overview.md](../ipatool/overview.md)），`error` 字段为英文消息，按子串匹配下表定位原因。
 
 | 错误消息（子串） | 原因与处理 |
 | --- | --- |
@@ -17,4 +17,4 @@
 1. 先看 `error` 消息本身，多数情况可直接对上上表。
 2. 涉及凭据的错误（keychain、token、账户）先重跑 `auth info` 确认登录状态，再决定是否重新登录。
 3. 涉及双重验证码的问题与苹果账户政策限制，见 [faq.md](faq.md)。
-4. 命令参数拿不准时回到 [../ipatool/commands.md](../ipatool/commands.md) 核对。
+4. 命令参数拿不准时回到 [../ipatool/](../ipatool/) 下对应命令的文档（[auth](../ipatool/auth.md) / [search](../ipatool/search.md) / [purchase](../ipatool/purchase.md) / [download](../ipatool/download.md)）核对。
